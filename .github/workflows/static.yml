@@ -21,30 +21,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  site:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Site with Maven
+      run: mvn site
+    - name: Temporarily save site artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: github-pages
+        path: ${{ github.workspace }}/target/site/**
+        retention-days: 1
   # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    needs: site
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-      - name: Site with Maven
-        run: mvn site
-      - run: ls
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: .target/site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
