@@ -35,11 +35,11 @@ jobs:
         cache: maven
     - name: Site with Maven
       run: mvn site
-    - name: Temporarily save site artifact
-      uses: actions/upload-artifact@v2
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.1
       with:
         name: github-pages
-        path: ${{ github.workspace }}/target/site/**
+        path: arget/site/
         retention-days: 1
   # Single deploy job since we're just deploying
   deploy:
