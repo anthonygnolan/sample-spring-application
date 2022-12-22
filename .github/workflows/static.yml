@@ -40,10 +40,11 @@ jobs:
           cache: maven
       - name: Site with Maven
         run: mvn site
+      - run: ls
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./target/site/**
+          path: .target/site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
