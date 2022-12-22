@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v3.1.1
       with:
         name: github-pages
-        path: arget/site/
+        path: target/site/
         retention-days: 1
   # Single deploy job since we're just deploying
   deploy:
